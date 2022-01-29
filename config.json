@@ -13,6 +13,18 @@
         },
         "channels": {
             "toxicity": "CHANNEL ID"
+        },
+        "exclude": {
+          "roles": [
+            "MOD_ROLE",
+            "ADMIN_ROLE"
+          ],
+          "except": {
+            "channels": [
+              "TESTING_CHANNEL",
+              "NO_BYPASS_CHANNEL"
+            ]
+          }
         }
     }
 }
