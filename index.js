@@ -12,6 +12,8 @@ const init = async() => {
         ]
     })
     bot.on('messageCreate', async (message) => {
+      if (message.author.bot) return;
+      if (!message.content) return; //assume attachments are non toxic lmao
         const analyzeRequest = {
             comment: {
                 text: message.content,
@@ -21,15 +23,16 @@ const init = async() => {
             },
             languages: ["en"]
         };
-        if (message.author.bot) return;
-
         await client.comments.analyze(
             {
               key: config.perspective.API_KEY,
               resource: analyzeRequest,
             },
             async (err, response) => {
-              if (err) throw err;
+              if (err) {
+                console.log(message)
+                throw err
+              }
               if (!response) {
                 console.log("Failed on message: %d SPLIT, content: %s", message.id, message.content)
               } else {
@@ -81,6 +84,8 @@ const init = async() => {
         
     })
     bot.on('messageUpdate', async (_oldMessage, message) => {
+        if (message.author.bot) return;
+        if (!message.content) return; //assume attachments are non toxic lmao
         const analyzeRequest = {
             comment: {
                 text: message.content,
@@ -90,7 +95,6 @@ const init = async() => {
             },
             languages: ["en"]
         };
-        if (message.author.bot) return;
 
         await client.comments.analyze(
             {
