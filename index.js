@@ -73,10 +73,12 @@ const init = async() => {
                 }
                 if (value > config.discord.thresholds.TOXICITY.delete) {
                     if (msg) {
+                      try {
                         await message.delete()
                         await msg.reply({
                             content: `**Message reached a score of >${config.discord.thresholds.TOXICITY.delete} (${value}) and has been deleted**`
                         })
+                      } catch (err) { throw err } //message likely got deleted already
                     }
                 }
               }
@@ -84,8 +86,8 @@ const init = async() => {
         
     })
     bot.on('messageUpdate', async (_oldMessage, message) => {
-        if (message.author.bot) return;
-        if (!message.content) return; //assume attachments are non toxic lmao
+            if (message.author.bot) return;
+      if (!message.content) return; //assume attachments are non toxic lmao
         const analyzeRequest = {
             comment: {
                 text: message.content,
@@ -147,10 +149,12 @@ const init = async() => {
                 }
                 if (value > config.discord.thresholds.TOXICITY.delete) {
                     if (msg) {
+                      try {
                         await message.delete()
                         await msg.reply({
                             content: `**Message reached a score of >${config.discord.thresholds.TOXICITY.delete} (${value}) and has been deleted**`
                         })
+                      } catch (err) { throw err } //it probably already got deleted
                     }
                 }
               }
